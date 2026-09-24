@@ -2,52 +2,54 @@ from collections import deque
 
 
 def bfs(graph, start, goal):
-    queue = deque([(start, [start])])
+    queue = deque([start])
     visited = {start}
     nodes_expanded = 0
 
     while queue:
-        current, path = queue.popleft()
+        node = queue.popleft()
         nodes_expanded += 1
 
-        if current == goal:
-            return path, nodes_expanded
+        if node == goal:
+            return nodes_expanded
 
-        for neighbor in graph.get(current, []):
+        for neighbor in graph[node]:
             if neighbor not in visited:
                 visited.add(neighbor)
-                queue.append((neighbor, path + [neighbor]))
+                queue.append(neighbor)
 
-    return None, nodes_expanded
+    return nodes_expanded
 
 
-if __name__ == "__main__":
+# Graph
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F', 'G'],
+    'D': ['H'],
+    'E': ['I'],
+    'F': ['J'],
+    'G': ['K'],
+    'H': [],
+    'I': [],
+    'J': [],
+    'K': []
+}
 
-    graph = {
-        "A": ["B", "C"],
-        "B": ["D", "E"],
-        "C": ["F", "G"],
-        "D": ["H", "I"],
-        "E": ["J", "K"],
-        "F": ["L", "M"],
-        "G": ["N", "O"],
-        "H": [],
-        "I": [],
-        "J": [],
-        "K": [],
-        "L": [],
-        "M": [],
-        "N": [],
-        "O": []
-    }
 
-    start = "A"
-    goal = "G"
+print("========== BFS ==========")
 
-    path, nodes = bfs(graph, start, goal)
+# Best case
+nodes = bfs(graph, 'A', 'B')
+print("Best Case - Goal: B")
+print("Nodes Expanded:", nodes)
 
-    print("BFS Search")
-    print("Start Node:", start)
-    print("Goal Node:", goal)
-    print("Path:", path)
-    print("Nodes Expanded:", nodes)
+# Average case
+nodes = bfs(graph, 'A', 'I')
+print("\nAverage Case - Goal: I")
+print("Nodes Expanded:", nodes)
+
+# Worst case
+nodes = bfs(graph, 'A', 'K')
+print("\nWorst Case - Goal: K")
+print("Nodes Expanded:", nodes)
